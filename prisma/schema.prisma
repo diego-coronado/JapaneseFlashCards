@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum LEVEL {
+  N5
+  N4
+  N3
+  N2
+  N1
+}
+
+enum TYPE {
+  word
+  kanji
+  grammar
+}
+
+model Chapter {
+  id         Int       @id
+  name       String
+  level      LEVEL
+  type       TYPE
+  created_at DateTime? @db.Date
+  updated_at DateTime? @db.Date
+}
