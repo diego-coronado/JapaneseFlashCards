@@ -1,16 +1,13 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+@layer components {
+  .margin-safe {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-8 xl:px-12;
+  }
 
-* {
-  box-sizing: border-box;
+  .btn {
+    @apply inline-flex items-center border font-medium justify-center whitespace-nowrap cursor-pointer transition-colors;
+  }
 }
