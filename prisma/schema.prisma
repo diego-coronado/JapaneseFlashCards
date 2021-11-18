@@ -22,10 +22,10 @@ enum TYPE {
 }
 
 model Chapter {
-  id         Int       @id
+  id         Int       @id @default(autoincrement())
   name       String
   level      LEVEL
   type       TYPE
-  created_at DateTime? @db.Date
-  updated_at DateTime? @db.Date
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
