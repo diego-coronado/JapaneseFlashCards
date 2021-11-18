@@ -27,7 +27,7 @@ const Chapters = ({
   const router = useRouter();
 
   return (
-    <div className="margin-safe py-10 space-y-3">
+    <div className="margin-safe py-5 space-y-3">
       <div onClick={() => router.back()} className="text-xs">Go back</div>
       <h1>Chapters</h1>
       <button

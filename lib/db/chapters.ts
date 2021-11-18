@@ -1,16 +1,16 @@
 import { LEVEL, TYPE } from ".prisma/client";
 import { prisma } from "./prisma";
 
-export async function getChapters() {
-  let chapters = await prisma.chapter.findMany();
-  chapters = chapters.map((chapter) => {
+export async function getChapters(options: any = {}) {
+  const chapters = await prisma.chapter.findMany({ ...options });
+  const chaptersFormatted = chapters.map((chapter) => {
     return {
       ...chapter,
       createdAt: chapter.createdAt.toString(),
       updatedAt: chapter.updatedAt.toString(),
     };
   });
-  return chapters;
+  return chaptersFormatted;
 }
 
 export async function createChapter(name: string, level: LEVEL, type: TYPE) {

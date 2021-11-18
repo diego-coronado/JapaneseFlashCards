@@ -11,8 +11,9 @@ export default function ChapterForm({
 }) {
   const levelKeys = Object.keys(levels);
   const typeKeys = Object.keys(types);
-
+  //@ts-ignore
   const [level, setLevel] = useState(levels[levelKeys[0]]);
+  //@ts-ignore
   const [type, setType] = useState(types[typeKeys[0]]);
   const [name, setName] = useState("");
 

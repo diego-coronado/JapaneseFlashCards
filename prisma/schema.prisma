@@ -22,10 +22,21 @@ enum TYPE {
 }
 
 model Chapter {
-  id         Int       @id @default(autoincrement())
-  name       String
-  level      LEVEL
-  type       TYPE
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        Int        @id @default(autoincrement())
+  name      String
+  level     LEVEL
+  type      TYPE
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  wordCards WordCard[]
+}
+
+model WordCard {
+  id        Int      @id @default(autoincrement())
+  word      String
+  reading   String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  chapterId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
