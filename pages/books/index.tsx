@@ -1,7 +1,9 @@
-import { Book } from ".prisma/client";
+import { Book, TYPE } from ".prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { getBooks } from "../../lib/db/books";
+import { Type } from "../../lib/types";
+import { getTypes } from "../../lib/util";
 import BookForm from "./bookForm";
 
 const BookCard = ({ book }: { book: Book }) => {
@@ -12,7 +14,7 @@ const BookCard = ({ book }: { book: Book }) => {
   );
 };
 
-const Books = ({ books }: { books: Book[] }) => {
+const Books = ({ books, types }: { books: Book[]; types: Type[] }) => {
   const [showBookForm, setShowBookForm] = useState(false);
   const router = useRouter();
 
@@ -28,7 +30,7 @@ const Books = ({ books }: { books: Book[] }) => {
       >
         Create a new Book
       </button>
-      {showBookForm && <BookForm />}
+      {showBookForm && <BookForm types={types} />}
       {books.length > 0 ? (
         <ul>
           {books.map((book) => (
@@ -44,9 +46,12 @@ const Books = ({ books }: { books: Book[] }) => {
 
 export async function getServerSideProps() {
   const books = await getBooks();
+  const types = await getTypes();
+
   return {
     props: {
       books,
+      types,
     },
   };
 }

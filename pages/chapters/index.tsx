@@ -1,5 +1,5 @@
 import { getChapters } from "../../lib/db/chapters";
-import { Book, Chapter, TYPE } from ".prisma/client";
+import { Book, Chapter } from ".prisma/client";
 import ChapterForm from "./chapterForm";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -11,7 +11,6 @@ const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
       <p>{`Chapter Name: ${chapter.name}`}</p>
       {/* @ts-ignore */}
       <p>{`Book: ${chapter.book.name}`}</p>
-      <p>{`Type: ${chapter.type}`}</p>
     </div>
   );
 };
@@ -19,15 +18,12 @@ const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
 const Chapters = ({
   books,
   chapters,
-  types,
 }: {
   books: Book[];
   chapters: Chapter[];
-  types: TYPE;
 }) => {
   const [showChapterForm, setShowChapterForm] = useState(false);
   const router = useRouter();
-  console.log(chapters);
 
   return (
     <div className="margin-safe py-5 space-y-3">
@@ -41,7 +37,7 @@ const Chapters = ({
       >
         Create a new Chapter
       </button>
-      {showChapterForm && <ChapterForm types={types} books={books} />}
+      {showChapterForm && <ChapterForm books={books} />}
       <div>List of chapters:</div>
       {chapters.length > 0 ? (
         <ul className="space-y-2">
@@ -71,15 +67,12 @@ export async function getServerSideProps() {
       },
     },
   });
-  console.log(chapters);
   const books = await getBooks();
-  const types = TYPE;
 
   return {
     props: {
       books,
       chapters,
-      types,
     },
   };
 }

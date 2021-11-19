@@ -24,7 +24,6 @@ enum TYPE {
 model Chapter {
   id          Int           @id @default(autoincrement())
   name        String
-  type        TYPE
   book        Book          @relation(fields: [bookId], references: [id])
   bookId      Int
   createdAt   DateTime      @default(now())
@@ -56,6 +55,7 @@ model GrammarCard {
 
 model Book {
   id        Int       @id @default(autoincrement())
+  type      TYPE      @default(kanji)
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

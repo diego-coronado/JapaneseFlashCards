@@ -2,16 +2,7 @@ import { useCallback, useState } from "react";
 import { Book, TYPE } from ".prisma/client";
 import Router from "next/router";
 
-export default function ChapterForm({
-  books,
-  types,
-}: {
-  books: Book[];
-  types: TYPE;
-}) {
-  const typeKeys = Object.keys(types);
-  //@ts-ignore
-  const [type, setType] = useState(types[typeKeys[0]]);
+export default function ChapterForm({ books }: { books: Book[] }) {
   const [name, setName] = useState("");
   const [bookId, setbookId] = useState(books.length > 0 ? books[0].id : "");
 
@@ -21,7 +12,6 @@ export default function ChapterForm({
       await fetch("api/chapters", {
         body: JSON.stringify({
           name,
-          type,
           bookId,
         }),
         method: "POST",
@@ -31,7 +21,7 @@ export default function ChapterForm({
       });
       Router.reload();
     },
-    [bookId, name, type]
+    [bookId, name]
   );
 
   return (
@@ -63,23 +53,6 @@ export default function ChapterForm({
             //@ts-ignore
             <option key={book.id} value={book.id}>
               {book.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="space-x-2">
-        <label htmlFor="type">Type:</label>
-        <select
-          id="type"
-          name="type"
-          value={type}
-          className="border border-gray-500 rounded-sm focus:outline-none"
-          onChange={(e) => setType(e.target.value)}
-        >
-          {typeKeys.map((type) => (
-            //@ts-ignore
-            <option key={type} value={types[type]}>
-              {type}
             </option>
           ))}
         </select>
