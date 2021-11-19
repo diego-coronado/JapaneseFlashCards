@@ -1,33 +1,18 @@
-import { Chapter } from ".prisma/client";
+import { Book, Chapter } from ".prisma/client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import * as R from "ramda";
 import Input from "../../components/input";
 import Router from "next/router";
 
-export default function WordCardForm({
-  chapters,
-  levels,
-}: {
-  chapters: Chapter[];
-  levels: string[];
-}) {
-  const byLevel = R.groupBy((chapter: Chapter) => chapter.level);
-  const chaptersByLevel = useMemo(() => byLevel(chapters), [byLevel, chapters]);
-  const [selectedLevel, setSelectedLevel] = useState(levels[0]);
-  const [chaptersOnLevel, setChaptersOnLevel] = useState(
-    //@ts-ignore
-    chaptersByLevel[selectedLevel]
-  );
+export default function WordCardForm({ books }: { books: Book[] }) {
   const [word, setWord] = useState("");
   const [reading, setReading] = useState("");
-  const [chapterId, setChapterId] = useState("");
 
-  useEffect(() => {
+  const [book, setBook] = useState(books[0]);
+  const [selectedBook, setSelectedBook] = useState(books[0].id.toString());
+  const [chapterId, setChapterId] = useState(
     //@ts-ignore
-    const chaptersOnLevelArr = chaptersByLevel[selectedLevel] || [];
-    setChaptersOnLevel(chaptersOnLevelArr);
-    setChapterId(chaptersOnLevelArr.length > 0 ? chaptersOnLevelArr[0].id : "");
-  }, [selectedLevel]);
+    books[0].chapters[0].id.toString()
+  );
 
   const handleWordCardCreate = useCallback(
     async (e) => {
@@ -50,37 +35,6 @@ export default function WordCardForm({
 
   return (
     <form className="flex-col space-y-2" onSubmit={handleWordCardCreate}>
-      <div className="flex">
-        <div>Level:</div>
-        <select onChange={(e) => setSelectedLevel(e.target.value)}>
-          {levels.map((level) => (
-            <option key={level} value={level}>
-              {level}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        {chaptersOnLevel?.length > 0 ? (
-          <div className="flex">
-            <div>Chapters:</div>
-            <select
-              onChange={(e) => {
-                console.log(e.target.value);
-                setChapterId(e.target.value);
-              }}
-            >
-              {chaptersOnLevel?.map((chapter: Chapter) => (
-                <option key={chapter.id} value={chapter.id}>
-                  {chapter.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        ) : (
-          <p>There are no chapters for this level</p>
-        )}
-      </div>
       <div className="flex space-x-2">
         <label htmlFor="word">Word:</label>
         <Input
@@ -102,6 +56,42 @@ export default function WordCardForm({
             setReading(e.target.value)
           }
         />
+      </div>
+      <div className="flex space-x-2">
+        <label htmlFor="book">Book:</label>
+        <select
+          id="book"
+          name="book"
+          className="border border-gray-500 rounded-sm focus:outline-none"
+          value={selectedBook}
+          onChange={(e) => {
+            setBook(books.find((b) => b.id.toString() === e.target.value)!);
+            setSelectedBook(e.target.value);
+          }}
+        >
+          {books.map((book) => (
+            <option key={book.id} value={book.id}>
+              {book.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="flex space-x-2">
+        <label htmlFor="chapter">Chapter:</label>
+        <select
+          id="chapter"
+          name="chapter"
+          className="border border-gray-500 rounded-sm focus:outline-none"
+          value={chapterId}
+          onChange={(e) => setChapterId(e.target.value)}
+        >
+          {/* @ts-ignore */}
+          {book.chapters.map((chapter: Chapter) => (
+            <option key={chapter.id} value={chapter.id}>
+              {chapter.name}
+            </option>
+          ))}
+        </select>
       </div>
       <button type="submit">Create</button>
     </form>

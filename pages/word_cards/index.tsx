@@ -1,44 +1,53 @@
-import { Chapter, LEVEL, WordCard } from ".prisma/client";
+import { Book, TYPE, WordCard } from ".prisma/client";
 import { useRouter } from "next/router";
-import { getChapters } from "../../lib/db/chapters";
+import { getBooks } from "../../lib/db/books";
 import { getWordCards } from "../../lib/db/wordCards";
 import WordCardForm from "./wordCardForm";
+import Link from "next/link";
 
-const WordCards = ({
-  chapters,
-  levels,
-  wordCards,
-}: {
-  chapters: Chapter[];
-  levels: string[];
-  wordCards: WordCard[];
-}) => {
+const WordCards = ({ books }: { books: Book[] }) => {
   const router = useRouter();
+
+  if (books.length === 0) {
+    return (
+      <div className="margin-safe py-5 space-y-3">
+        <div>
+          You do not have a book of type grammar added, please add one by
+          clicking the link below
+        </div>
+        <Link href="/books">Create a new Book</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="margin-safe py-5 space-y-3">
       <div onClick={() => router.back()} className="text-xs">
         Go back
       </div>
-      <WordCardForm chapters={chapters} levels={levels} />
+      <WordCardForm books={books} />
     </div>
   );
 };
 
 export async function getServerSideProps() {
-  const levels = Object.keys(LEVEL);
-  const chapters = await getChapters({
+  const books = await getBooks({
     where: {
-      type: "word",
+      type: {
+        equals: TYPE.word,
+      },
+    },
+    include: {
+      chapters: {
+        select: { id: true, name: true },
+      },
     },
   });
-  const wordCards = await getWordCards();
+  // const wordCards = await getWordCards();
 
   return {
     props: {
-      chapters,
-      levels,
-      wordCards,
+      books,
     },
   };
 }

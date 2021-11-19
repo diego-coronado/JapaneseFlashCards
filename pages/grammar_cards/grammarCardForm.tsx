@@ -11,6 +11,7 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
   const [book, setBook] = useState(books[0]);
   const [selectedBook, setSelectedBook] = useState(books[0].id.toString());
   const [chapterId, setChapterId] = useState(
+    //@ts-ignore
     books[0].chapters[0].id.toString()
   );
 
@@ -97,6 +98,7 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
           value={chapterId}
           onChange={(e) => setChapterId(e.target.value)}
         >
+          {/* @ts-ignore */}
           {book.chapters.map((chapter: Chapter) => (
             <option key={chapter.id} value={chapter.id}>
               {chapter.name}
