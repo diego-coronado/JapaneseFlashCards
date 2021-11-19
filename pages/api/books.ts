@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createChapter } from "../../lib/db/chapters";
+import { createBook } from "../../lib/db/books";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,9 +9,9 @@ export default async function handler(
   try {
     switch (method) {
       case "POST": {
-        const { name, bookId, type } = body;
-        const chapter = await createChapter(name, bookId, type);
-        res.send({ data: chapter });
+        const { name } = body;
+        const book = await createBook(name);
+        res.send({ data: book });
         break;
       }
       default: {

@@ -1,21 +1,19 @@
 import { useCallback, useState } from "react";
-import { LEVEL, TYPE } from ".prisma/client";
+import { Book, TYPE } from ".prisma/client";
 import Router from "next/router";
 
 export default function ChapterForm({
-  levels,
+  books,
   types,
 }: {
-  levels: LEVEL;
+  books: Book[];
   types: TYPE;
 }) {
-  const levelKeys = Object.keys(levels);
   const typeKeys = Object.keys(types);
-  //@ts-ignore
-  const [level, setLevel] = useState(levels[levelKeys[0]]);
   //@ts-ignore
   const [type, setType] = useState(types[typeKeys[0]]);
   const [name, setName] = useState("");
+  const [bookId, setbookId] = useState(books.length > 0 ? books[0].id : "");
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -24,7 +22,7 @@ export default function ChapterForm({
         body: JSON.stringify({
           name,
           type,
-          level,
+          bookId,
         }),
         method: "POST",
         headers: {
@@ -33,11 +31,14 @@ export default function ChapterForm({
       });
       Router.reload();
     },
-    [level, name, type]
+    [bookId, name, type]
   );
 
   return (
-    <form className="flex-col space-y-2 border border-gray-400 rounded-md p-2" onSubmit={handleSubmit}>
+    <form
+      className="flex-col space-y-2 border border-gray-400 rounded-md p-2"
+      onSubmit={handleSubmit}
+    >
       <div className="space-x-2">
         <label htmlFor="name">Name:</label>
         <input
@@ -48,6 +49,23 @@ export default function ChapterForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+      </div>
+      <div className="space-x-2">
+        <label htmlFor="bookId">Book:</label>
+        <select
+          id="bookId"
+          name="bookId"
+          value={bookId}
+          className="border border-gray-500 rounded-sm focus:outline-none"
+          onChange={(e) => setbookId(e.target.value)}
+        >
+          {books.map((book) => (
+            //@ts-ignore
+            <option key={book.id} value={book.id}>
+              {book.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="space-x-2">
         <label htmlFor="type">Type:</label>
@@ -62,23 +80,6 @@ export default function ChapterForm({
             //@ts-ignore
             <option key={type} value={types[type]}>
               {type}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="space-x-2">
-        <label htmlFor="level">Level:</label>
-        <select
-          id="level"
-          name="level"
-          value={level}
-          className="border border-gray-500 rounded-sm focus:outline-none"
-          onChange={(e) => setLevel(e.target.value)}
-        >
-          {levelKeys.map((level) => (
-            //@ts-ignore
-            <option key={level} value={levels[level]}>
-              {level}
             </option>
           ))}
         </select>

@@ -1,4 +1,4 @@
-import { LEVEL, TYPE } from ".prisma/client";
+import { TYPE } from ".prisma/client";
 import { prisma } from "./prisma";
 
 export async function getChapters(options: any = {}) {
@@ -13,11 +13,11 @@ export async function getChapters(options: any = {}) {
   return chaptersFormatted;
 }
 
-export async function createChapter(name: string, level: LEVEL, type: TYPE) {
+export async function createChapter(name: string, bookId: number, type: TYPE) {
   return await prisma.chapter.create({
     data: {
       name,
-      level,
+      bookId,
       type,
     },
   });

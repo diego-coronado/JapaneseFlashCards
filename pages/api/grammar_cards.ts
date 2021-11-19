@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createChapter } from "../../lib/db/chapters";
+import { createGrammarCard } from "../../lib/db/grammarCards";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,9 +9,14 @@ export default async function handler(
   try {
     switch (method) {
       case "POST": {
-        const { name, bookId, type } = body;
-        const chapter = await createChapter(name, bookId, type);
-        res.send({ data: chapter });
+        const { point, structure, definition, chapterId } = body;
+        const grammarCard = await createGrammarCard(
+          point,
+          structure,
+          definition,
+          chapterId
+        );
+        res.send({ data: grammarCard });
         break;
       }
       default: {
