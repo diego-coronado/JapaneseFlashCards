@@ -30,6 +30,7 @@ model Chapter {
   updatedAt   DateTime      @updatedAt
   wordCards   WordCard[]
   GrammarCard GrammarCard[]
+  KanjiCard   KanjiCard[]
 }
 
 model WordCard {
@@ -60,4 +61,15 @@ model Book {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   chapters  Chapter[]
+}
+
+model KanjiCard {
+  id        Int      @id @default(autoincrement())
+  kanji     String
+  onyomi    String
+  kunyomi   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  chapterId Int
 }

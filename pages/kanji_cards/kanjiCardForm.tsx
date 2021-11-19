@@ -1,12 +1,12 @@
-import { Book, Chapter } from ".prisma/client";
+import { Book } from ".prisma/client";
 import Router from "next/router";
 import { useCallback, useState } from "react";
 import Input from "../../components/input";
 
-export default function GrammarCardForm({ books }: { books: Book[] }) {
-  const [point, setPoint] = useState("");
-  const [structure, setStructure] = useState("");
-  const [definition, setDefinition] = useState("");
+function KanjiCardForm({ books }: { books: Book[] }) {
+  const [kanji, setKanji] = useState("");
+  const [onyomi, setOnyomi] = useState("");
+  const [kunyomi, setKunyomi] = useState("");
   const [book, setBook] = useState(books[0]);
   const [selectedBook, setSelectedBook] = useState(books[0].id.toString());
   const [chapterId, setChapterId] = useState(
@@ -17,11 +17,11 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
   const handleCreateGrammarCard = useCallback(
     async (e) => {
       e.preventDefault();
-      await fetch("api/grammar_cards", {
+      await fetch("api/kanji_cards", {
         body: JSON.stringify({
-          point,
-          structure,
-          definition,
+          kanji,
+          onyomi,
+          kunyomi,
           chapterId,
         }),
         method: "POST",
@@ -31,41 +31,41 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
       });
       Router.reload();
     },
-    [chapterId, definition, point, structure]
+    [chapterId, kanji, kunyomi, onyomi]
   );
 
   return (
     <form className="flex-col space-y-2" onSubmit={handleCreateGrammarCard}>
       <div className="flex space-x-2">
-        <label htmlFor="point">Point:</label>
+        <label htmlFor="kanji">Kanji:</label>
         <Input
-          id="point"
-          name="point"
-          value={point}
+          id="kanji"
+          name="kanji"
+          value={kanji}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPoint(e.target.value)
+            setKanji(e.target.value)
           }
         />
       </div>
       <div className="flex space-x-2">
-        <label htmlFor="structure">Structure:</label>
+        <label htmlFor="onyomi">Onyomi:</label>
         <Input
-          id="structure"
-          name="structure"
-          value={structure}
+          id="onyomi"
+          name="onyomi"
+          value={onyomi}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setStructure(e.target.value)
+            setOnyomi(e.target.value)
           }
         />
       </div>
       <div className="flex space-x-2">
-        <label htmlFor="definition">Definition:</label>
+        <label htmlFor="kunyomi">Kunyomi:</label>
         <Input
-          id="definition"
-          name="definition"
-          value={definition}
+          id="kunyomi"
+          name="kunyomi"
+          value={kunyomi}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setDefinition(e.target.value)
+            setKunyomi(e.target.value)
           }
         />
       </div>
@@ -115,3 +115,5 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
     </form>
   );
 }
+
+export default KanjiCardForm;
