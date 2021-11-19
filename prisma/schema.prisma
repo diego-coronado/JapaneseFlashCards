@@ -22,13 +22,15 @@ enum TYPE {
 }
 
 model Chapter {
-  id        Int        @id @default(autoincrement())
-  name      String
-  level     LEVEL
-  type      TYPE
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  wordCards WordCard[]
+  id          Int           @id @default(autoincrement())
+  name        String
+  type        TYPE
+  book        Book          @relation(fields: [bookId], references: [id])
+  bookId      Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  wordCards   WordCard[]
+  GrammarCard GrammarCard[]
 }
 
 model WordCard {
@@ -39,4 +41,23 @@ model WordCard {
   chapterId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model GrammarCard {
+  id         Int      @id @default(autoincrement())
+  point      String
+  structure  String
+  definition String
+  chapter    Chapter  @relation(fields: [chapterId], references: [id])
+  chapterId  Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Book {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  chapters  Chapter[]
 }
