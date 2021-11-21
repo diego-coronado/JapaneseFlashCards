@@ -19,26 +19,28 @@ enum TYPE {
   word
   kanji
   grammar
+  vocabulary
 }
 
 model Chapter {
-  id          Int           @id @default(autoincrement())
-  name        String
-  book        Book          @relation(fields: [bookId], references: [id])
-  bookId      Int
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  wordCards   WordCard[]
-  grammarCard GrammarCard[]
-  kanjiCard   KanjiCard[]
+  id             Int              @id @default(autoincrement())
+  name           String
+  book           Book             @relation(fields: [bookId], references: [id])
+  bookId         Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  wordCards      WordCard[]
+  grammarCard    GrammarCard[]
+  kanjiCard      KanjiCard[]
+  vocabularyCard VocabularyCard[]
 }
 
 model WordCard {
   id                     Int                      @id @default(autoincrement())
   word                   String
   reading                String
-  chapter                Chapter                  @relation(fields: [chapterId], references: [id])
-  chapterId              Int
+  chapter                Chapter?                 @relation(fields: [chapterId], references: [id])
+  chapterId              Int?
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   wordCardOnWordCardList WordCardOnWordCardList[]
@@ -49,8 +51,9 @@ model GrammarCard {
   point                        String
   structure                    String
   definition                   String
-  chapter                      Chapter                        @relation(fields: [chapterId], references: [id])
-  chapterId                    Int
+  examples                     String[]
+  chapter                      Chapter?                       @relation(fields: [chapterId], references: [id])
+  chapterId                    Int?
   createdAt                    DateTime                       @default(now())
   updatedAt                    DateTime                       @updatedAt
   grammarCardOnGrammarCardList GrammarCardOnGrammarCardList[]
@@ -68,12 +71,12 @@ model Book {
 model KanjiCard {
   id                       Int                        @id @default(autoincrement())
   kanji                    String
-  onyomi                   String
-  kunyomi                  String
+  onyomi                   String[]
+  kunyomi                  String[]
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @updatedAt
-  chapter                  Chapter                    @relation(fields: [chapterId], references: [id])
-  chapterId                Int
+  chapter                  Chapter?                   @relation(fields: [chapterId], references: [id])
+  chapterId                Int?
   kanjiCardOnKanjiCardList KanjiCardOnKanjiCardList[]
 }
 
@@ -132,4 +135,34 @@ model GrammarCardOnGrammarCardList {
   updatedAt         DateTime        @updatedAt
 
   @@id([grammarCardId, grammarCardListId])
+}
+
+model VocabularyCard {
+  id                                 Int                                  @id @default(autoincrement())
+  word                               String
+  meaning                            String
+  chapter                            Chapter?                             @relation(fields: [chapterId], references: [id])
+  chapterId                          Int?
+  createdAt                          DateTime                             @default(now())
+  updatedAt                          DateTime                             @updatedAt
+  VocabularyCardOnVocabularyCardList VocabularyCardOnVocabularyCardList[]
+}
+
+model VocabularyCardList {
+  id                                 Int                                  @id @default(autoincrement())
+  name                               String
+  createdAt                          DateTime                             @default(now())
+  updatedAt                          DateTime                             @updatedAt
+  VocabularyCardOnVocabularyCardList VocabularyCardOnVocabularyCardList[]
+}
+
+model VocabularyCardOnVocabularyCardList {
+  vocabularyCard       VocabularyCard     @relation(fields: [vocabularyCardId], references: [id])
+  vocabularyCardId     Int
+  vocabularyCardList   VocabularyCardList @relation(fields: [vocabularyCardListId], references: [id])
+  vocabularyCardListId Int
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@id([vocabularyCardId, vocabularyCardListId])
 }
