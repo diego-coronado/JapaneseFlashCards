@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createBook } from "../../lib/db/books";
+import { createVocabularyCard } from "../../lib/db/vocabularyCards";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,9 +9,13 @@ export default async function handler(
   try {
     switch (method) {
       case "POST": {
-        const { name, type } = body;
-        const book = await createBook(name, type);
-        res.send({ data: book });
+        const { word, meaning, chapterId } = body;
+        const vocabularyCard = await createVocabularyCard(
+          word,
+          meaning,
+          chapterId
+        );
+        res.send({ data: vocabularyCard });
         break;
       }
       default: {

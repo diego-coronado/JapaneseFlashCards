@@ -1,10 +1,5 @@
 import { KeyboardEvent } from "react";
-
-interface FilterOption {
-  id: string;
-  name: string;
-  [_: string]: any;
-}
+import { Option } from "../lib/types";
 
 const _accessor = (option: any) => option;
 
@@ -16,14 +11,14 @@ function CheckboxGroup({
   accessor = _accessor,
   className = "",
 }: {
-  options: FilterOption[];
-  selectedOptions: FilterOption[];
+  options: Option[];
+  selectedOptions: Option[];
   setSelectedOptions: (options: any) => void;
-  onCheckboxChange?: (option: FilterOption) => void;
+  onCheckboxChange?: (option: Option) => void;
   accessor?: (option: any) => any;
   className?: string;
 }) {
-  const _onCheckboxChange = (option: FilterOption) => {
+  const _onCheckboxChange = (option: Option) => {
     if (selectedOptions.includes(option)) {
       setSelectedOptions(selectedOptions.filter((item) => item !== option));
     } else {
@@ -33,7 +28,7 @@ function CheckboxGroup({
   const onChange = onCheckboxChange || _onCheckboxChange;
   const handleKeyDown = (
     e: KeyboardEvent<HTMLInputElement>,
-    option: FilterOption
+    option: Option
   ) => {
     if (e.key === "Enter") {
       onChange(accessor(option));
@@ -44,11 +39,11 @@ function CheckboxGroup({
       {options?.map((option) => (
         <label
           key={option.id}
-          className="py-2 px-4 flex items-center cursor-pointer"
+          className="py-2 px-4 flex items-center cursor-pointer w-full"
         >
           <input
             type="checkbox"
-            className="focus:ring-primary h-4 w-4 text-primary border-dark-50 rounded"
+            className="focus:ring-gray-600 h-4 w-4 text-gray-600 bg-blue-600 border-gray-200 rounded"
             checked={selectedOptions.includes(accessor(option))}
             onChange={() => onChange(accessor(option))}
             onKeyPress={(e) => handleKeyDown(e, option)}

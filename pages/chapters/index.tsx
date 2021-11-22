@@ -4,6 +4,7 @@ import ChapterForm from "./chapterForm";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { getBooks } from "../../lib/db/books";
+import GoBackButton from "../../components/goBackButton";
 
 const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
   return (
@@ -27,9 +28,7 @@ const Chapters = ({
 
   return (
     <div className="margin-safe py-5 space-y-3">
-      <div onClick={() => router.back()} className="text-xs">
-        Go back
-      </div>
+      <GoBackButton />
       <h1>Chapters</h1>
       <button
         className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"
@@ -57,7 +56,6 @@ export async function getServerSideProps() {
     select: {
       id: true,
       name: true,
-      type: true,
       createdAt: true,
       updatedAt: true,
       book: {

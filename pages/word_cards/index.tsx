@@ -4,6 +4,7 @@ import { getBooks } from "../../lib/db/books";
 import { getWordCards } from "../../lib/db/wordCards";
 import WordCardForm from "./wordCardForm";
 import Link from "next/link";
+import GoBackButton from "../../components/goBackButton";
 
 const WordCards = ({ books }: { books: Book[] }) => {
   const router = useRouter();
@@ -12,8 +13,8 @@ const WordCards = ({ books }: { books: Book[] }) => {
     return (
       <div className="margin-safe py-5 space-y-3">
         <div>
-          You do not have a book of type grammar added, please add one by
-          clicking the link below
+          You do not have a book of type grammar nor kanji added, please add one
+          by clicking the link below
         </div>
         <Link href="/books">Create a new Book</Link>
       </div>
@@ -22,9 +23,7 @@ const WordCards = ({ books }: { books: Book[] }) => {
 
   return (
     <div className="margin-safe py-5 space-y-3">
-      <div onClick={() => router.back()} className="text-xs">
-        Go back
-      </div>
+      <GoBackButton />
       <WordCardForm books={books} />
     </div>
   );
@@ -33,9 +32,18 @@ const WordCards = ({ books }: { books: Book[] }) => {
 export async function getServerSideProps() {
   const books = await getBooks({
     where: {
-      type: {
-        equals: TYPE.word,
-      },
+      OR: [
+        {
+          type: {
+            equals: TYPE.grammar,
+          },
+        },
+        {
+          type: {
+            equals: TYPE.kanji,
+          },
+        },
+      ],
     },
     include: {
       chapters: {
@@ -43,7 +51,6 @@ export async function getServerSideProps() {
       },
     },
   });
-  // const wordCards = await getWordCards();
 
   return {
     props: {

@@ -9,8 +9,8 @@ export default async function handler(
   try {
     switch (method) {
       case "POST": {
-        const { name, bookId, type } = body;
-        const chapter = await createChapter(name, bookId, type);
+        const { name, bookId } = body;
+        const chapter = await createChapter(name, parseInt(bookId));
         res.send({ data: chapter });
         break;
       }

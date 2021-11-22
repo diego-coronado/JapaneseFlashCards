@@ -1,3 +1,4 @@
+import { TYPE } from ".prisma/client";
 import { prisma } from "./prisma";
 
 export async function getBooks(options: any = {}) {
@@ -12,10 +13,11 @@ export async function getBooks(options: any = {}) {
   return booksFormatted;
 }
 
-export async function createBook(name: string) {
+export async function createBook(name: string, type: TYPE) {
   return await prisma.book.create({
     data: {
       name,
+      type,
     },
   });
 }

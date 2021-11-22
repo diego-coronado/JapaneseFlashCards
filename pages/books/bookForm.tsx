@@ -1,20 +1,21 @@
-import { TYPE } from ".prisma/client";
 import Router from "next/router";
 import { useCallback, useState } from "react";
+import Button from "../../components/button";
 import Input from "../../components/input";
+import Select from "../../components/select";
 import { Type } from "../../lib/types";
 
 export default function BookForm({ types }: { types: Type[] }) {
-  const [type, setType] = useState(types[0].id);
+  const [type, setType] = useState<Type | null>(types[0]);
   const [name, setName] = useState("");
 
   const handleCreateBook = useCallback(
     async (e) => {
       e.preventDefault();
-      await fetch("api/books", {
+      const res = await fetch("api/books", {
         body: JSON.stringify({
           name,
-          type,
+          type: type?.id,
         }),
         method: "POST",
         headers: {
@@ -27,34 +28,30 @@ export default function BookForm({ types }: { types: Type[] }) {
   );
 
   return (
-    <form onSubmit={handleCreateBook} className="flex-col space-y-2">
-      <label htmlFor="name">Name:</label>
-      <Input
-        id="name"
-        name="name"
-        value={name}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setName(e.target.value);
-        }}
-      />
-      <div className="space-x-2">
+    <div className="flex-col space-y-2 border border-gray-400 rounded-md p-2">
+      <div className="flex items-center space-x-2">
+        <label htmlFor="name">Name:</label>
+        <Input
+          id="name"
+          name="name"
+          value={name}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            setName(e.target.value);
+          }}
+        />
+      </div>
+      <div className="space-x-2 flex items-center">
         <label htmlFor="type">Type:</label>
-        <select
-          id="type"
-          name="type"
-          value={type}
-          className="border border-gray-500 rounded-sm focus:outline-none"
-          onChange={(e) => setType(e.target.value)}
-        >
-          {types.map((type) => (
-            <option key={type.id} value={type.id}>
-              {type.name}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={types}
+          selectedOption={type}
+          //@ts-ignore
+          setSelectedOption={setType}
+          placeholder="Select a type"
+        />
       </div>
 
-      <button type="submit">Create</button>
-    </form>
+      <Button onClick={handleCreateBook} title="Create" />
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { TYPE } from ".prisma/client";
 import { prisma } from "./prisma";
 
 export async function getChapters(options: any = {}) {
@@ -13,12 +12,11 @@ export async function getChapters(options: any = {}) {
   return chaptersFormatted;
 }
 
-export async function createChapter(name: string, bookId: number, type: TYPE) {
+export async function createChapter(name: string, bookId: number) {
   return await prisma.chapter.create({
     data: {
       name,
       bookId,
-      type,
     },
   });
 }

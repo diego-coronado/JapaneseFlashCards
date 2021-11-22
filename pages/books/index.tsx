@@ -1,6 +1,7 @@
-import { Book, TYPE } from ".prisma/client";
+import { Book } from ".prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import GoBackButton from "../../components/goBackButton";
 import { getBooks } from "../../lib/db/books";
 import { Type } from "../../lib/types";
 import { getTypes } from "../../lib/util";
@@ -10,6 +11,7 @@ const BookCard = ({ book }: { book: Book }) => {
   return (
     <div className="border border-gray-400 rounded-md p-2 flex-col">
       <p>{`Name: ${book.name}`}</p>
+      <p>{`Type: ${book.type}`}</p>
     </div>
   );
 };
@@ -20,9 +22,7 @@ const Books = ({ books, types }: { books: Book[]; types: Type[] }) => {
 
   return (
     <div className="margin-safe py-5 space-y-3">
-      <div onClick={() => router.back()} className="text-xs">
-        Go back
-      </div>
+      <GoBackButton />
       <h1>Books</h1>
       <button
         className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"

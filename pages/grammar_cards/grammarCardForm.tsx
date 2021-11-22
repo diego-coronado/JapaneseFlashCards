@@ -1,18 +1,16 @@
 import { Book, Chapter } from ".prisma/client";
 import Router from "next/router";
 import { useCallback, useState } from "react";
+import Button from "../../components/button";
 import Input from "../../components/input";
+import Select from "../../components/select";
 
 export default function GrammarCardForm({ books }: { books: Book[] }) {
   const [point, setPoint] = useState("");
   const [structure, setStructure] = useState("");
   const [definition, setDefinition] = useState("");
-  const [book, setBook] = useState(books[0]);
-  const [selectedBook, setSelectedBook] = useState(books[0].id.toString());
-  const [chapterId, setChapterId] = useState(
-    //@ts-ignore
-    books[0].chapters[0].id.toString()
-  );
+  const [book, setBook] = useState<Book | null>(null);
+  const [chapter, setChapter] = useState<Chapter | null>(null);
 
   const handleCreateGrammarCard = useCallback(
     async (e) => {
@@ -22,7 +20,7 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
           point,
           structure,
           definition,
-          chapterId,
+          chapterId: chapter?.id,
         }),
         method: "POST",
         headers: {
@@ -31,11 +29,11 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
       });
       Router.reload();
     },
-    [chapterId, definition, point, structure]
+    [chapter, definition, point, structure]
   );
 
   return (
-    <form className="flex-col space-y-2" onSubmit={handleCreateGrammarCard}>
+    <div className="flex-col space-y-2 border border-gray-400 rounded-md p-2">
       <div className="flex space-x-2">
         <label htmlFor="point">Point:</label>
         <Input
@@ -69,49 +67,31 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
           }
         />
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 items-center">
         <label htmlFor="book">Book:</label>
-        <select
-          id="book"
-          name="book"
-          className="border border-gray-500 rounded-sm focus:outline-none"
-          value={selectedBook}
-          onChange={(e) => {
-            setBook(books.find((b) => b.id.toString() === e.target.value)!);
-            setSelectedBook(e.target.value);
-          }}
-        >
-          {books.map((book) => (
-            <option key={book.id} value={book.id}>
-              {book.name}
-            </option>
-          ))}
-        </select>
+        <Select
+          options={books}
+          selectedOption={book}
+          //@ts-ignore
+          setSelectedOption={setBook}
+          placeholder="Select a book"
+          allowNull={true}
+        />
       </div>
-      <div className="flex space-x-2">
-        <label htmlFor="chapter">Chapter:</label>
-        <select
-          id="chapter"
-          name="chapter"
-          className="border border-gray-500 rounded-sm focus:outline-none"
-          value={chapterId}
-          onChange={(e) => setChapterId(e.target.value)}
-        >
-          {/* @ts-ignore */}
-          {book.chapters.map((chapter: Chapter) => (
-            <option key={chapter.id} value={chapter.id}>
-              {chapter.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <button
-        type="submit"
-        className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"
-        // disabled={name.length === 0}
-      >
-        Create
-      </button>
-    </form>
+      {book && (
+        <div className="flex space-x-2 items-center">
+          <label htmlFor="chapter">Chapter:</label>
+          <Select
+            //@ts-ignore
+            options={book.chapters}
+            selectedOption={chapter}
+            //@ts-ignore
+            setSelectedOption={setChapter}
+            placeholder="Select a chapter"
+          />
+        </div>
+      )}
+      <Button onClick={handleCreateGrammarCard} title="Create" />
+    </div>
   );
 }

@@ -1,25 +1,23 @@
+import { useCallback, useState } from "react";
 import { Book, Chapter } from ".prisma/client";
 import Router from "next/router";
-import { useCallback, useState } from "react";
 import Button from "../../components/button";
-import Input from "../../components/input";
 import Select from "../../components/select";
+import Input from "../../components/input";
 
-function KanjiCardForm({ books }: { books: Book[] }) {
-  const [kanji, setKanji] = useState("");
-  const [onyomi, setOnyomi] = useState("");
-  const [kunyomi, setKunyomi] = useState("");
+function VocabularyCardForm({ books }: { books: Book[] }) {
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
   const [book, setBook] = useState<Book | null>(null);
   const [chapter, setChapter] = useState<Chapter | null>(null);
 
-  const handleCreateKanjiCard = useCallback(
+  const handleVocabularyCardCreate = useCallback(
     async (e) => {
       e.preventDefault();
-      await fetch("api/kanji_cards", {
+      await fetch("api/vocabulary_cards", {
         body: JSON.stringify({
-          kanji,
-          onyomi,
-          kunyomi,
+          word,
+          meaning,
           chapterId: chapter?.id,
         }),
         method: "POST",
@@ -29,41 +27,30 @@ function KanjiCardForm({ books }: { books: Book[] }) {
       });
       Router.reload();
     },
-    [chapter, kanji, kunyomi, onyomi]
+    [chapter, meaning, word]
   );
 
   return (
     <div className="flex-col space-y-2 border border-gray-400 rounded-md p-2">
       <div className="flex space-x-2 items-center">
-        <label htmlFor="kanji">Kanji:</label>
+        <label htmlFor="word">Word:</label>
         <Input
-          id="kanji"
-          name="kanji"
-          value={kanji}
+          id="word"
+          name="word"
+          value={word}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setKanji(e.target.value)
+            setWord(e.target.value)
           }
         />
       </div>
       <div className="flex space-x-2 items-center">
-        <label htmlFor="onyomi">Onyomi:</label>
+        <label htmlFor="meaning">Meaning:</label>
         <Input
-          id="onyomi"
-          name="onyomi"
-          value={onyomi}
+          id="meaning"
+          name="meaning"
+          value={meaning}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setOnyomi(e.target.value)
-          }
-        />
-      </div>
-      <div className="flex space-x-2 items-center">
-        <label htmlFor="kunyomi">Kunyomi:</label>
-        <Input
-          id="kunyomi"
-          name="kunyomi"
-          value={kunyomi}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setKunyomi(e.target.value)
+            setMeaning(e.target.value)
           }
         />
       </div>
@@ -91,9 +78,9 @@ function KanjiCardForm({ books }: { books: Book[] }) {
           />
         </div>
       )}
-      <Button onClick={handleCreateKanjiCard} title="Create" />
+      <Button onClick={handleVocabularyCardCreate} title="Create" />
     </div>
   );
 }
 
-export default KanjiCardForm;
+export default VocabularyCardForm;
