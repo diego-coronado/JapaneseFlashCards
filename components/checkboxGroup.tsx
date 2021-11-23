@@ -1,4 +1,4 @@
-import { KeyboardEvent } from "react";
+import { useCallback } from "react";
 import { Option } from "../lib/types";
 
 const _accessor = (option: any) => option;
@@ -26,29 +26,33 @@ function CheckboxGroup({
     }
   };
   const onChange = onCheckboxChange || _onCheckboxChange;
-  const handleKeyDown = (
-    e: KeyboardEvent<HTMLInputElement>,
-    option: Option
-  ) => {
-    if (e.key === "Enter") {
-      onChange(accessor(option));
-    }
-  };
+
+  const isIncluded = useCallback<(option: Option) => boolean>(
+    //@ts-ignore
+    (option) => {
+      return selectedOptions.find(
+        (item) => accessor(item) === accessor(option)
+      );
+    },
+    [selectedOptions, accessor]
+  );
+
   return (
     <div className={className}>
       {options?.map((option) => (
         <label
           key={option.id}
-          className="py-2 px-4 flex items-center cursor-pointer w-full"
+          className="py-2 px-4 flex items-center cursor-pointer w-auto"
         >
           <input
             type="checkbox"
-            className="focus:ring-gray-600 h-4 w-4 text-gray-600 bg-blue-600 border-gray-200 rounded"
-            checked={selectedOptions.includes(accessor(option))}
-            onChange={() => onChange(accessor(option))}
-            onKeyPress={(e) => handleKeyDown(e, option)}
+            className="focus:ring-gray-600 h-4 w-4 text-gray-600 border-gray-400 rounded"
+            checked={isIncluded(option)}
+            onChange={() => onChange(option)}
           />
-          <span className="pl-3.5 text-dark-100 font-body">{option.name}</span>
+          <span className="pl-3.5 text-dark-100 font-body">
+            {accessor(option)}
+          </span>
         </label>
       ))}
     </div>

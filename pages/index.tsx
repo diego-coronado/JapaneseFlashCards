@@ -31,6 +31,9 @@ const Home: NextPage = () => {
       <div>
         <Link href="/kanji_cards">Create a new Kanji Card</Link>
       </div>
+      <div>
+        <Link href="/vocabulary_lists">Create a new Vocabulary List</Link>
+      </div>
     </div>
   );
 };
