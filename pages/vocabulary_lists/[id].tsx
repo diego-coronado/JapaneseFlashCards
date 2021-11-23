@@ -9,9 +9,19 @@ import {
   getVocabularyLists,
 } from "../../lib/db/vocabularyLists";
 
-//https://www.cram.com/flashcards/ato-a-school-test-211-635593
+type Option = {
+  vocabularyCard: {
+    word: string;
+    meaning: string;
+  };
+};
 
-function VocabularyList({ list }: { list: VocabularyCardList }) {
+type VocabularyCardListWithCards = {
+  vocabularyCards: any[];
+} & VocabularyCardList;
+
+//https://www.cram.com/flashcards/ato-a-school-test-211-635593
+function VocabularyList({ list }: { list: VocabularyCardListWithCards }) {
   const [startStudy, setStartStudy] = useState(false);
   const router = useRouter();
 
@@ -29,8 +39,8 @@ function VocabularyList({ list }: { list: VocabularyCardList }) {
       {startStudy && (
         <DeckSlider
           list={list.vocabularyCards}
-          front={(option) => option.vocabularyCard.word}
-          back={(option) => option.vocabularyCard.meaning}
+          front={(option: Option) => option.vocabularyCard.word}
+          back={(option: Option) => option.vocabularyCard.meaning}
         />
       )}
     </div>
@@ -48,7 +58,7 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params }: { params: { id: string } }) {
   const list = await getVocabularyList(parseInt(params.id), {
     include: {
       vocabularyCards: {

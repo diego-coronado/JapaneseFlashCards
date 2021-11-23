@@ -1,14 +1,15 @@
 import { useCallback, useState } from "react";
 import Router from "next/router";
 import Accordion from "../../components/accordion";
-import { Book, Chapter } from ".prisma/client";
 import CheckboxGroup from "../../components/checkboxGroup";
 import Button from "../../components/button";
 import Input from "../../components/input";
+import { BookWithChapter, ChapterWithCard } from "../../lib/types";
+import { VocabularyCard } from ".prisma/client";
 
-function VocabularyListForm({ books }: { books: Book[] }) {
+function VocabularyListForm({ books }: { books: BookWithChapter[] }) {
   const [name, setName] = useState("");
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState<VocabularyCard[]>([]);
 
   const handleVocabularyCardCreate = useCallback(
     async (e) => {
@@ -45,13 +46,15 @@ function VocabularyListForm({ books }: { books: Book[] }) {
 
         return (
           <Accordion key={book.id} title={book.name}>
-            {book.chapters.map((chapter: Chapter) => {
+            {book.chapters.map((chapter: ChapterWithCard) => {
               if (!chapter.vocabularyCard) return null;
 
               return (
                 <Accordion key={chapter.id} title={chapter.name}>
                   <CheckboxGroup
+                    //@ts-ignore
                     options={chapter.vocabularyCard}
+                    //@ts-ignore
                     selectedOptions={cards}
                     setSelectedOptions={setCards}
                     accessor={(item) => item.word}

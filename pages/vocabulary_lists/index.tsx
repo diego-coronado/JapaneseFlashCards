@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Book, TYPE, VocabularyCardList } from ".prisma/client";
+import { TYPE } from ".prisma/client";
 import { getBooks } from "../../lib/db/books";
 import GoBackButton from "../../components/goBackButton";
 import VocabularyListForm from "./vocabularyListForm";
 import { getVocabularyLists } from "../../lib/db/vocabularyLists";
+import Link from "next/link";
+import format from "date-fns/format";
+import { BookWithChapter, VocabularyCardListWithCards } from "../../lib/types";
 
 const VocabularyLists = ({
   books,
   vocabularyLists,
 }: {
-  books: Book[];
-  vocabularyLists: VocabularyCardList[];
+  books: BookWithChapter[];
+  vocabularyLists: VocabularyCardListWithCards[];
 }) => {
   const [showForm, setShowForm] = useState(false);
 
@@ -26,6 +29,20 @@ const VocabularyLists = ({
 
       {showForm && <VocabularyListForm books={books} />}
       <div className="text-2xl">Vocabulary Lists:</div>
+      <div className="space-y-2">
+        {vocabularyLists.map((deck) => (
+          <div key={deck.id} className="border border-gray-400 rounded-md p-2">
+            <div>
+              <Link href={`vocabulary_lists/${deck.id}`}>{deck.name}</Link>
+            </div>
+            <div>{`Number of cards: ${deck.vocabularyCards.length}`}</div>
+            <div>{`Created: ${format(
+              new Date(deck.createdAt),
+              "dd/MM/yyyy"
+            )}`}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -49,7 +66,17 @@ export async function getServerSideProps() {
       },
     },
   });
-  const vocabularyLists = await getVocabularyLists();
+  const vocabularyLists = await getVocabularyLists({
+    include: {
+      vocabularyCards: {
+        select: {
+          vocabularyCard: {
+            select: { id: true },
+          },
+        },
+      },
+    },
+  });
 
   return {
     props: {
