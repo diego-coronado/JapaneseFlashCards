@@ -1,23 +1,23 @@
 import { useCallback, useState } from "react";
+import { GrammarCard } from ".prisma/client";
 import Router from "next/router";
 import Accordion from "../../components/accordion";
 import CheckboxGroup from "../../components/checkboxGroup";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import { BookWithChapter, ChapterWithCard } from "../../lib/types";
-import { VocabularyCard } from ".prisma/client";
 
-function VocabularyListForm({ books }: { books: BookWithChapter[] }) {
+function GrammarListForm({ books }: { books: BookWithChapter[] }) {
   const [name, setName] = useState("");
-  const [cards, setCards] = useState<VocabularyCard[]>([]);
+  const [cards, setCards] = useState<GrammarCard[]>([]);
 
   const handleCreate = useCallback(
     async (e) => {
       e.preventDefault();
-      await fetch("api/vocabulary_lists", {
+      await fetch("api/grammar_lists", {
         body: JSON.stringify({
           name,
-          vocabularyIds: cards.map((card) => card.id),
+          grammarIds: cards.map((card) => card.id),
         }),
         method: "POST",
         headers: {
@@ -48,17 +48,17 @@ function VocabularyListForm({ books }: { books: BookWithChapter[] }) {
         return (
           <Accordion key={book.id} title={book.name}>
             {book.chapters.map((chapter: ChapterWithCard) => {
-              if (!chapter.vocabularyCard) return null;
+              if (!chapter.grammarCard) return null;
 
               return (
                 <Accordion key={chapter.id} title={chapter.name}>
                   <CheckboxGroup
                     //@ts-ignore
-                    options={chapter.vocabularyCard}
+                    options={chapter.grammarCard}
                     //@ts-ignore
                     selectedOptions={cards}
                     setSelectedOptions={setCards}
-                    accessor={(item) => item.word}
+                    accessor={(item) => item.point}
                     className="flex flex-col flex-nowrap border border-gray-400 rounded-md sm:flex-wrap sm:h-80 "
                   />
                 </Accordion>
@@ -72,4 +72,4 @@ function VocabularyListForm({ books }: { books: BookWithChapter[] }) {
   );
 }
 
-export default VocabularyListForm;
+export default GrammarListForm;

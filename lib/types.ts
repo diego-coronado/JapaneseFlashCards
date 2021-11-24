@@ -24,8 +24,8 @@ export type VocabularyCardListWithCards = {
 
 export type ChapterWithCard = {
   vocabularyCard?: VocabularyCard[];
-  grammarCard?: GrammarCard;
-  wordCard?: WordCard;
+  grammarCard?: GrammarCard[];
+  wordCard?: WordCard[];
 } & Chapter;
 
 export type BookWithChapter = {

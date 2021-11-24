@@ -34,6 +34,9 @@ const Home: NextPage = () => {
       <div>
         <Link href="/vocabulary_lists">Create a new Vocabulary List</Link>
       </div>
+      <div>
+        <Link href="/grammar_lists">Create a new Grammar List</Link>
+      </div>
     </div>
   );
 };

@@ -1,23 +1,18 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { getGrammarList, getGrammarLists } from "../../lib/db/grammarLists";
+import GoBackButton from "../../components/goBackButton";
 import Button from "../../components/button";
 import DeckSlider from "../../components/deckSlider";
-import GoBackButton from "../../components/goBackButton";
-import {
-  getVocabularyList,
-  getVocabularyLists,
-} from "../../lib/db/vocabularyLists";
-import { VocabularyCardListWithCards } from "../../lib/types";
 
 type Option = {
-  vocabularyCard: {
+  grammarCard: {
     word: string;
     meaning: string;
   };
 };
 
-//https://www.cram.com/flashcards/ato-a-school-test-211-635593
-function VocabularyList({ list }: { list: VocabularyCardListWithCards }) {
+function GrammarList({ list }) {
   const [startStudy, setStartStudy] = useState(false);
   const router = useRouter();
 
@@ -34,9 +29,14 @@ function VocabularyList({ list }: { list: VocabularyCardListWithCards }) {
       />
       {startStudy && (
         <DeckSlider
-          list={list.vocabularyCards}
-          front={(option: Option) => option.vocabularyCard.word}
-          back={(option: Option) => option.vocabularyCard.meaning}
+          list={list.grammarCards}
+          front={(option: Option) => <div className="p-2 pr-4">{option.grammarCard.point}</div>}
+          back={(option: Option) => (
+            <div className="p-2">
+              <div className="text-xs text-left sm:text-base">{`Structure: ${option.grammarCard.structure}`}</div>
+              <div className="text-xs text-left sm:text-base">{`Definition: ${option.grammarCard.definition}`}</div>
+            </div>
+          )}
         />
       )}
     </div>
@@ -44,7 +44,7 @@ function VocabularyList({ list }: { list: VocabularyCardListWithCards }) {
 }
 
 export async function getStaticPaths() {
-  const lists = await getVocabularyLists();
+  const lists = await getGrammarLists();
   const paths = lists.map((item) => {
     return { params: { id: item.id.toString() } };
   });
@@ -55,12 +55,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
-  const list = await getVocabularyList(parseInt(params.id), {
+  const list = await getGrammarList(parseInt(params.id), {
     include: {
-      vocabularyCards: {
+      grammarCards: {
         select: {
-          vocabularyCard: {
-            select: { id: true, word: true, meaning: true },
+          grammarCard: {
+            select: {
+              id: true,
+              point: true,
+              structure: true,
+              definition: true,
+              examples: true,
+            },
           },
         },
       },
@@ -73,4 +79,4 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   };
 }
 
-export default VocabularyList;
+export default GrammarList;
