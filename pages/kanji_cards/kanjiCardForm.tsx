@@ -4,9 +4,12 @@ import { useCallback, useState } from "react";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import Select from "../../components/select";
+import { XCircleIcon } from "@heroicons/react/solid";
 
 function KanjiCardForm({ books }: { books: Book[] }) {
   const [kanji, setKanji] = useState("");
+  const [onyomiList, setOnyomiList] = useState<string[]>([]);
+  const [kunyomiList, setKunyomiList] = useState<string[]>([]);
   const [onyomi, setOnyomi] = useState("");
   const [kunyomi, setKunyomi] = useState("");
   const [book, setBook] = useState<Book | null>(null);
@@ -18,8 +21,8 @@ function KanjiCardForm({ books }: { books: Book[] }) {
       await fetch("api/kanji_cards", {
         body: JSON.stringify({
           kanji,
-          onyomi,
-          kunyomi,
+          onyomi: onyomiList,
+          kunyomi: kunyomiList,
           chapterId: chapter?.id,
         }),
         method: "POST",
@@ -29,7 +32,7 @@ function KanjiCardForm({ books }: { books: Book[] }) {
       });
       Router.reload();
     },
-    [chapter, kanji, kunyomi, onyomi]
+    [chapter, kanji, kunyomiList, onyomiList]
   );
 
   return (
@@ -45,7 +48,7 @@ function KanjiCardForm({ books }: { books: Book[] }) {
           }
         />
       </div>
-      <div className="flex space-x-2 items-center">
+      <div className="flex space-x-1 items-center">
         <label htmlFor="onyomi">Onyomi:</label>
         <Input
           id="onyomi"
@@ -55,8 +58,34 @@ function KanjiCardForm({ books }: { books: Book[] }) {
             setOnyomi(e.target.value)
           }
         />
+        <button
+          className="bg-white py-0 px-1 border border-gray-400 rounded-md"
+          onClick={() => {
+            setOnyomiList((prev) => [...prev, onyomi]);
+            setOnyomi("");
+          }}
+        >
+          Add
+        </button>
       </div>
-      <div className="flex space-x-2 items-center">
+      {onyomiList.length > 0 && (
+        <ul className="list-disc">
+          {onyomiList.map((item, i) => (
+            <li key={item} className="flex items-center space-x-1">
+              <div>{item}</div>
+              <XCircleIcon
+                className="text-gray-400 h-4 w-4 cursor-pointer"
+                onClick={() => {
+                  const arr = [...onyomiList];
+                  arr.splice(i);
+                  setOnyomiList(arr);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="flex space-x-1 items-center">
         <label htmlFor="kunyomi">Kunyomi:</label>
         <Input
           id="kunyomi"
@@ -66,7 +95,33 @@ function KanjiCardForm({ books }: { books: Book[] }) {
             setKunyomi(e.target.value)
           }
         />
+        <button
+          className="bg-white py-0 px-1 border border-gray-400 rounded-md"
+          onClick={() => {
+            setKunyomiList((prev) => [...prev, kunyomi]);
+            setKunyomi("");
+          }}
+        >
+          Add
+        </button>
       </div>
+      {kunyomiList.length > 0 && (
+        <ul className="list-disc">
+          {kunyomiList.map((item, i) => (
+            <li key={item} className="flex items-center space-x-1">
+              <div>{item}</div>
+              <XCircleIcon
+                className="text-gray-400 h-4 w-4 cursor-pointer"
+                onClick={() => {
+                  const arr = [...kunyomiList];
+                  arr.splice(i);
+                  setKunyomiList(arr);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="flex space-x-2 items-center">
         <label htmlFor="book">Book:</label>
         <Select

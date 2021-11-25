@@ -1,4 +1,5 @@
 import { Book, Chapter } from ".prisma/client";
+import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
 import { useCallback, useState } from "react";
 import Button from "../../components/button";
@@ -9,6 +10,8 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
   const [point, setPoint] = useState("");
   const [structure, setStructure] = useState("");
   const [definition, setDefinition] = useState("");
+  const [example, setExample] = useState("");
+  const [examples, setExamples] = useState<string[]>([]);
   const [book, setBook] = useState<Book | null>(null);
   const [chapter, setChapter] = useState<Chapter | null>(null);
 
@@ -20,6 +23,7 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
           point,
           structure,
           definition,
+          examples,
           chapterId: chapter?.id,
         }),
         method: "POST",
@@ -29,7 +33,7 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
       });
       Router.reload();
     },
-    [chapter, definition, point, structure]
+    [chapter, definition, examples, point, structure]
   );
 
   return (
@@ -67,6 +71,43 @@ export default function GrammarCardForm({ books }: { books: Book[] }) {
           }
         />
       </div>
+      <div className="flex space-x-1 items-center">
+        <label htmlFor="example">Examples:</label>
+        <Input
+          id="example"
+          name="example"
+          value={example}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setExample(e.target.value)
+          }
+        />
+        <button
+          className="bg-white py-0 px-1 border border-gray-400 rounded-md"
+          onClick={() => {
+            setExamples((prev) => [...prev, example]);
+            setExample("");
+          }}
+        >
+          Add
+        </button>
+      </div>
+      {examples.length > 0 && (
+        <ul className="list-disc">
+          {examples.map((item, i) => (
+            <li key={item} className="flex items-center space-x-1">
+              <div>{item}</div>
+              <XCircleIcon
+                className="text-gray-400 h-4 w-4 cursor-pointer"
+                onClick={() => {
+                  const arr = [...examples];
+                  arr.splice(i);
+                  setExamples(arr);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="flex space-x-2 items-center">
         <label htmlFor="book">Book:</label>
         <Select

@@ -29,7 +29,7 @@ const KanjiCards = ({ books }: { books: Book[] }) => {
         className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"
         onClick={() => setShowKanjiCardForm((prev) => !prev)}
       >
-        Create a new Grammar Card
+        Create a new Kanji Card
       </button>
       {showKanjiCardForm && <KanjiCardForm books={books} />}
     </div>

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createGrammarCard } from "../../lib/db/grammarCards";
+import { createKanjiList } from "../../lib/db/kanjiLists";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,15 +9,9 @@ export default async function handler(
   try {
     switch (method) {
       case "POST": {
-        const { point, structure, definition, chapterId, examples } = body;
-        const grammarCard = await createGrammarCard(
-          point,
-          structure,
-          definition,
-          examples,
-          chapterId
-        );
-        res.send({ data: grammarCard });
+        const { name, kanjiIds } = body;
+        const kanjiList = await createKanjiList(name, kanjiIds);
+        res.send({ data: kanjiList });
         break;
       }
       default: {

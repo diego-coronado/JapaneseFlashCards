@@ -16,6 +16,7 @@ export async function createGrammarCard(
   point: string,
   structure: string,
   definition: string,
+  examples: string[],
   chapterId: number
 ) {
   return await prisma.grammarCard.create({
@@ -24,6 +25,7 @@ export async function createGrammarCard(
       structure,
       definition,
       chapterId,
+      examples,
     },
   });
 }

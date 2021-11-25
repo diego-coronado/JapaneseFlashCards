@@ -14,8 +14,8 @@ export async function getKanjiCards(options: any = {}) {
 
 export async function createKanjiCards(
   kanji: string,
-  onyomi: string,
-  kunyomi: string,
+  onyomi: string[],
+  kunyomi: string[],
   chapterId: number
 ) {
   return await prisma.kanjiCard.create({
