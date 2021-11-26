@@ -1,11 +1,12 @@
 import clsx from "clsx";
+import { ReactNode } from "react";
 
 function Button({
   title,
   onClick,
   className = "",
 }: {
-  title: string;
+  title: string | ReactNode;
   onClick: any;
   className?: string;
 }) {

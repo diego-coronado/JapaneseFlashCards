@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { getGrammarList, getGrammarLists } from "../../lib/db/grammarLists";
+import { getKanjiList, getKanjiLists } from "../../lib/db/kanjiLists";
 import GoBackButton from "../../components/goBackButton";
 import Button from "../../components/button";
 import DeckSlider from "../../components/deckSlider";
-import { GrammarCardListWithCards } from "../../lib/types";
+import { KanjiCardListWithCards } from "../../lib/types";
 
 type Option = {
-  grammarCard: {
-    point: string;
-    structure: string;
-    definition: string;
-    examples: string[];
+  kanjiCard: {
+    kanji: string;
+    onyomi: string[];
+    kunyomi: string[];
   };
 };
 
-function GrammarList({ list }: { list: GrammarCardListWithCards }) {
+function KanjiList({ list }: { list: KanjiCardListWithCards }) {
   const [startStudy, setStartStudy] = useState(false);
   const router = useRouter();
 
@@ -32,14 +31,18 @@ function GrammarList({ list }: { list: GrammarCardListWithCards }) {
       />
       {startStudy && (
         <DeckSlider
-          list={list.grammarCards}
+          list={list.kanjiCards}
           front={(option: Option) => (
-            <div className="p-2 pr-4">{option.grammarCard.point}</div>
+            <div className="p-2 pr-4">{option.kanjiCard.kanji}</div>
           )}
           back={(option: Option) => (
             <div className="p-2">
-              <div className="text-xs text-left sm:text-base">{`Structure: ${option.grammarCard.structure}`}</div>
-              <div className="text-xs text-left sm:text-base">{`Definition: ${option.grammarCard.definition}`}</div>
+              <div className="text-xs text-left sm:text-base">{`On: ${option.kanjiCard.onyomi.join(
+                ", "
+              )}`}</div>
+              <div className="text-xs text-left sm:text-base">{`Kun: ${option.kanjiCard.kunyomi.join(
+                ", "
+              )}`}</div>
             </div>
           )}
         />
@@ -49,7 +52,7 @@ function GrammarList({ list }: { list: GrammarCardListWithCards }) {
 }
 
 export async function getStaticPaths() {
-  const lists = await getGrammarLists();
+  const lists = await getKanjiLists();
   const paths = lists.map((item) => {
     return { params: { id: item.id.toString() } };
   });
@@ -60,17 +63,16 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
-  const list = await getGrammarList(parseInt(params.id), {
+  const list = await getKanjiList(parseInt(params.id), {
     include: {
-      grammarCards: {
+      kanjiCards: {
         select: {
-          grammarCard: {
+          kanjiCard: {
             select: {
               id: true,
-              point: true,
-              structure: true,
-              definition: true,
-              examples: true,
+              kanji: true,
+              onyomi: true,
+              kunyomi: true,
             },
           },
         },
@@ -84,4 +86,4 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
   };
 }
 
-export default GrammarList;
+export default KanjiList;

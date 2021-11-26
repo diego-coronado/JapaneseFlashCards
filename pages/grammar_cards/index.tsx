@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getBooks } from "../../lib/db/books";
 import GrammarCardForm from "./grammarCardForm";
 import Link from "next/link";
+import GoBackButton from "../../components/goBackButton";
 
 const GrammarCards = ({ books }: { books: Book[] }) => {
   const [showGrammarCardForm, setShowGrammarCardForm] = useState(false);
@@ -13,8 +14,8 @@ const GrammarCards = ({ books }: { books: Book[] }) => {
     return (
       <div className="margin-safe py-5 space-y-3">
         <div>
-          You do not have a book of type grammar added, please add one by clicking
-          the link below
+          You do not have a book of type grammar added, please add one by
+          clicking the link below
         </div>
         <Link href="/books">Create a new Book</Link>
       </div>
@@ -23,9 +24,7 @@ const GrammarCards = ({ books }: { books: Book[] }) => {
 
   return (
     <div className="margin-safe py-5 space-y-3">
-      <div onClick={() => router.back()} className="text-xs">
-        Go back
-      </div>
+      <GoBackButton />
       <button
         className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"
         onClick={() => setShowGrammarCardForm((prev) => !prev)}

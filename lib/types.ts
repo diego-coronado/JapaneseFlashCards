@@ -2,9 +2,13 @@ import {
   Book,
   Chapter,
   GrammarCard,
+  GrammarCardList,
+  KanjiCard,
+  KanjiCardList,
   VocabularyCard,
   VocabularyCardList,
   WordCard,
+  WordCardList,
 } from ".prisma/client";
 
 export interface Type {
@@ -25,9 +29,22 @@ export type VocabularyCardListWithCards = {
 export type ChapterWithCard = {
   vocabularyCard?: VocabularyCard[];
   grammarCard?: GrammarCard[];
-  wordCard?: WordCard[];
+  wordCards?: WordCard[];
+  kanjiCard?: KanjiCard[];
 } & Chapter;
 
 export type BookWithChapter = {
   chapters: Chapter[];
 } & Book;
+
+export type WordCardListWithCards = {
+  wordCards: any[];
+} & WordCardList;
+
+export type KanjiCardListWithCards = {
+  kanjiCards: any[];
+} & KanjiCardList;
+
+export type GrammarCardListWithCards = {
+  grammarCards: any[];
+} & GrammarCardList;

@@ -26,7 +26,7 @@ function DeckSlider({
   }, [shuffledList]);
 
   const clickPrevious = useCallback(() => {
-    if (index - 1 > 0) {
+    if (index - 1 >= 0) {
       setIndex((prev) => prev - 1);
       setShowFront(true);
     }
@@ -86,7 +86,7 @@ function DeckSlider({
       </div>
       <div className="text-xl text-center w-full h-full">
         {showBoth ? (
-          <div className="flex flex-col divide-y divide-gray-400 divide-solid w-full h-full" >
+          <div className="flex flex-col divide-y divide-gray-400 divide-solid w-full h-full">
             <div className="flex-1 flex items-center justify-center min-h-15">
               {front(shuffledList[index])}
             </div>

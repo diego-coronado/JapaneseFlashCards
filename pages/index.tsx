@@ -37,6 +37,12 @@ const Home: NextPage = () => {
       <div>
         <Link href="/grammar_lists">Create a new Grammar List</Link>
       </div>
+      <div>
+        <Link href="/kanji_lists">Create a new Kanji List</Link>
+      </div>
+      <div>
+        <Link href="/word_lists">Create a new Word List</Link>
+      </div>
     </div>
   );
 };

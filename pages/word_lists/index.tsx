@@ -2,18 +2,18 @@ import { useState } from "react";
 import { TYPE } from ".prisma/client";
 import { getBooks } from "../../lib/db/books";
 import GoBackButton from "../../components/goBackButton";
-import VocabularyListForm from "./vocabularyListForm";
-import { getVocabularyLists } from "../../lib/db/vocabularyLists";
 import Link from "next/link";
 import format from "date-fns/format";
-import { BookWithChapter, VocabularyCardListWithCards } from "../../lib/types";
+import { BookWithChapter, WordCardListWithCards } from "../../lib/types";
+import { getWordLists } from "../../lib/db/wordLists";
+import WordListForm from "./wordListform";
 
-const VocabularyLists = ({
+const WordLists = ({
   books,
-  vocabularyLists,
+  wordLists,
 }: {
   books: BookWithChapter[];
-  vocabularyLists: VocabularyCardListWithCards[];
+  wordLists: WordCardListWithCards[];
 }) => {
   const [showForm, setShowForm] = useState(false);
 
@@ -24,22 +24,22 @@ const VocabularyLists = ({
         className="button py-1 px-2 rounded-md focus:outline-none border border-gray-400"
         onClick={() => setShowForm((prev) => !prev)}
       >
-        Create a new Vocabulary List
+        Create a new Word List
       </button>
 
-      {showForm && <VocabularyListForm books={books} />}
-      <div className="text-2xl">Vocabulary Lists:</div>
-      {vocabularyLists.length > 0 ? (
+      {showForm && <WordListForm books={books} />}
+      <div className="text-2xl">Word Lists:</div>
+      {wordLists.length > 0 ? (
         <div className="space-y-2">
-          {vocabularyLists.map((deck) => (
+          {wordLists.map((deck) => (
             <div
               key={deck.id}
               className="border border-gray-400 rounded-md p-2"
             >
               <div>
-                <Link href={`vocabulary_lists/${deck.id}`}>{deck.name}</Link>
+                <Link href={`word_lists/${deck.id}`}>{deck.name}</Link>
               </div>
-              <div>{`Number of cards: ${deck.vocabularyCards.length}`}</div>
+              <div>{`Number of cards: ${deck.wordCards.length}`}</div>
               <div>{`Created: ${format(
                 new Date(deck.createdAt),
                 "dd/MM/yyyy"
@@ -57,27 +57,36 @@ const VocabularyLists = ({
 export async function getServerSideProps() {
   const books = await getBooks({
     where: {
-      type: {
-        equals: TYPE.vocabulary,
-      },
+      OR: [
+        {
+          type: {
+            equals: TYPE.kanji,
+          },
+        },
+        {
+          type: {
+            equals: TYPE.vocabulary,
+          },
+        },
+      ],
     },
     include: {
       chapters: {
         select: {
           id: true,
           name: true,
-          vocabularyCard: {
+          wordCards: {
             select: { id: true, word: true },
           },
         },
       },
     },
   });
-  const vocabularyLists = await getVocabularyLists({
+  const wordLists = await getWordLists({
     include: {
-      vocabularyCards: {
+      wordCards: {
         select: {
-          vocabularyCard: {
+          wordCard: {
             select: { id: true },
           },
         },
@@ -88,9 +97,9 @@ export async function getServerSideProps() {
   return {
     props: {
       books,
-      vocabularyLists,
+      wordLists,
     },
   };
 }
 
-export default VocabularyLists;
+export default WordLists;
