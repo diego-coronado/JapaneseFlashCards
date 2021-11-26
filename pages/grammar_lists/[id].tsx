@@ -37,9 +37,21 @@ function GrammarList({ list }: { list: GrammarCardListWithCards }) {
             <div className="p-2 pr-4">{option.grammarCard.point}</div>
           )}
           back={(option: Option) => (
-            <div className="p-2">
+            <div className="p-2 space-y-2">
               <div className="text-xs text-left sm:text-base">{`Structure: ${option.grammarCard.structure}`}</div>
               <div className="text-xs text-left sm:text-base">{`Definition: ${option.grammarCard.definition}`}</div>
+            </div>
+          )}
+          hints={(option: Option) => (
+            <div className="p-2">
+              <p className="text-left text-xs sm:text-sm">Hints:</p>
+              <ul className="text-xs sm:text-sm text-left">
+                {option.grammarCard.examples.map(
+                  (example: string, i: number) => (
+                    <li key={i}>{example}</li>
+                  )
+                )}
+              </ul>
             </div>
           )}
         />

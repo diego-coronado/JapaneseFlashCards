@@ -69,9 +69,9 @@ function KanjiCardForm({ books }: { books: Book[] }) {
         </button>
       </div>
       {onyomiList.length > 0 && (
-        <ul className="list-disc">
+        <div className="ml-2">
           {onyomiList.map((item, i) => (
-            <li key={item} className="flex items-center space-x-1">
+            <div key={item} className="flex items-center space-x-1">
               <div>{item}</div>
               <XCircleIcon
                 className="text-gray-400 h-4 w-4 cursor-pointer"
@@ -81,9 +81,9 @@ function KanjiCardForm({ books }: { books: Book[] }) {
                   setOnyomiList(arr);
                 }}
               />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
       <div className="flex space-x-1 items-center">
         <label htmlFor="kunyomi">Kunyomi:</label>
@@ -106,9 +106,9 @@ function KanjiCardForm({ books }: { books: Book[] }) {
         </button>
       </div>
       {kunyomiList.length > 0 && (
-        <ul className="list-disc">
+        <div className="ml-2">
           {kunyomiList.map((item, i) => (
-            <li key={item} className="flex items-center space-x-1">
+            <div key={item} className="flex items-center space-x-1">
               <div>{item}</div>
               <XCircleIcon
                 className="text-gray-400 h-4 w-4 cursor-pointer"
@@ -118,9 +118,9 @@ function KanjiCardForm({ books }: { books: Book[] }) {
                   setKunyomiList(arr);
                 }}
               />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
       <div className="flex space-x-2 items-center">
         <label htmlFor="book">Book:</label>

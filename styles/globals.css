@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ul { @apply list-disc list-inside }
+}
+
 @layer components {
   .margin-safe {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-8 xl:px-12;

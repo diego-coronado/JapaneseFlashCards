@@ -7,16 +7,19 @@ function DeckSlider({
   list,
   front,
   back,
+  hints,
 }: {
   list: any[];
   front: Function;
   back: Function;
+  hints?: Function;
 }) {
   const [shuffledList, setShuffledList] = useState(list);
   const [index, setIndex] = useState(0);
   const [showBoth, setShowBoth] = useState(false);
   const [showFront, setShowFront] = useState(true);
   const [showFrontFirst, setShowFrontFirst] = useState(true);
+  const [showHints, setShowHints] = useState(false);
 
   const shuffleList = useCallback(() => {
     let shuffled = [...shuffledList];
@@ -45,7 +48,7 @@ function DeckSlider({
         <Button title="Previous" onClick={clickPrevious} />
         <Button title="Shuffle" onClick={shuffleList} />
         <Button
-          title="Front only"
+          title="One side"
           onClick={() => setShowBoth(false)}
           className={clsx({
             "bg-gray-300": !showBoth,
@@ -58,10 +61,17 @@ function DeckSlider({
             "bg-gray-300": showBoth,
           })}
         />
+        <Button
+          title="Show Hints"
+          onClick={() => setShowHints((prev) => !prev)}
+          className={clsx({
+            "bg-gray-300": showHints,
+          })}
+        />
         {!showBoth && (
           <>
             <Button
-              title={showFrontFirst ? "Front first" : "Back first"}
+              title={"Front first"}
               onClick={() => setShowFrontFirst((prev) => !prev)}
               className={clsx({
                 "bg-gray-300": showFrontFirst,
@@ -84,30 +94,39 @@ function DeckSlider({
         )}
         <Button title="Next" onClick={clickNext} />
       </div>
-      <div className="text-xl text-center w-full h-full">
+      <div className="text-xl text-center w-full h-full flex-1">
         {showBoth ? (
           <div className="flex flex-col divide-y divide-gray-400 divide-solid w-full h-full">
-            <div className="flex-1 flex items-center justify-center min-h-15">
+            <div className="flex-1 flex flex-col min-h-15">
               {front(shuffledList[index])}
+              {hints && showHints && hints(shuffledList[index])}
             </div>
             <div className="flex-1 flex items-center justify-center min-h-15">
               {back(shuffledList[index])}
             </div>
           </div>
         ) : (
-          <div className="cursor-pointer h-full flex items-center justify-center relative">
-            {showFront ? (
+          <div className="cursor-pointer h-full flex">
+            {showFrontFirst ? (
               <>
-                {showFrontFirst ? (
-                  <>{front(shuffledList[index])}</>
+                {showFront ? (
+                  <div className="w-full">
+                    <div className="w-full text-center">
+                      {front(shuffledList[index])}
+                    </div>
+                    {hints && showHints && hints(shuffledList[index])}
+                  </div>
                 ) : (
                   <>{back(shuffledList[index])}</>
                 )}
               </>
             ) : (
               <>
-                {showFrontFirst ? (
-                  <>{back(shuffledList[index])}</>
+                {showFront ? (
+                  <div className="w-full">
+                    {back(shuffledList[index])}
+                    {hints && showHints && hints(shuffledList[index])}
+                  </div>
                 ) : (
                   <>{front(shuffledList[index])}</>
                 )}
