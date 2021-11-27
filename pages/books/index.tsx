@@ -5,7 +5,7 @@ import GoBackButton from "../../components/goBackButton";
 import { getBooks } from "../../lib/db/books";
 import { Type } from "../../lib/types";
 import { getTypes } from "../../lib/util";
-import BookForm from "./bookForm";
+import BookForm from "../../components/forms/bookForm";
 
 const BookCard = ({ book }: { book: Book }) => {
   return (
@@ -47,7 +47,6 @@ const Books = ({ books, types }: { books: Book[]; types: Type[] }) => {
 export async function getServerSideProps() {
   const books = await getBooks();
   const types = await getTypes();
-  console.log("=======books:======", books);
 
   return {
     props: {
