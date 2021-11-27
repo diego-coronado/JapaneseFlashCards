@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TYPE } from ".prisma/client";
 import { getBooks } from "../../lib/db/books";
 import GoBackButton from "../../components/goBackButton";
-import VocabularyListForm from "./vocabularyListForm";
+import VocabularyListForm from "../../components/forms/vocabularyListForm";
 import { getVocabularyLists } from "../../lib/db/vocabularyLists";
 import Link from "next/link";
 import format from "date-fns/format";

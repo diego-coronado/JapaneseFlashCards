@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { Book } from ".prisma/client";
 import Router from "next/router";
-import Button from "../../components/button";
-import Input from "../../components/input";
-import Select from "../../components/select";
+import Button from "../button";
+import Input from "../input";
+import Select from "../select";
 
 export default function ChapterForm({ books }: { books: Book[] }) {
   const [name, setName] = useState("");

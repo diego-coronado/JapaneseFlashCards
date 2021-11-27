@@ -6,7 +6,7 @@ import Link from "next/link";
 import format from "date-fns/format";
 import { BookWithChapter, WordCardListWithCards } from "../../lib/types";
 import { getWordLists } from "../../lib/db/wordLists";
-import WordListForm from "./wordListform";
+import WordListForm from "../../components/forms/wordListform";
 
 const WordLists = ({
   books,

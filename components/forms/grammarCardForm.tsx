@@ -2,9 +2,9 @@ import { Book, Chapter } from ".prisma/client";
 import { XCircleIcon } from "@heroicons/react/solid";
 import Router from "next/router";
 import { useCallback, useState } from "react";
-import Button from "../../components/button";
-import Input from "../../components/input";
-import Select from "../../components/select";
+import Button from "../button";
+import Input from "../input";
+import Select from "../select";
 
 export default function GrammarCardForm({ books }: { books: Book[] }) {
   const [point, setPoint] = useState("");

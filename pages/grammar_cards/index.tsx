@@ -2,7 +2,7 @@ import { Book, TYPE } from ".prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { getBooks } from "../../lib/db/books";
-import GrammarCardForm from "./grammarCardForm";
+import GrammarCardForm from "../../components/forms/grammarCardForm";
 import Link from "next/link";
 import GoBackButton from "../../components/goBackButton";
 

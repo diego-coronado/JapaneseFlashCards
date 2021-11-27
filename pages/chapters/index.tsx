@@ -1,6 +1,6 @@
 import { getChapters } from "../../lib/db/chapters";
 import { Book, Chapter } from ".prisma/client";
-import ChapterForm from "./chapterForm";
+import ChapterForm from "../../components/forms/chapterForm";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { getBooks } from "../../lib/db/books";

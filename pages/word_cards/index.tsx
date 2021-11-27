@@ -2,7 +2,7 @@ import { Book, TYPE, WordCard } from ".prisma/client";
 import { useRouter } from "next/router";
 import { getBooks } from "../../lib/db/books";
 import { getWordCards } from "../../lib/db/wordCards";
-import WordCardForm from "./wordCardForm";
+import WordCardForm from "../../components/forms/wordCardForm";
 import Link from "next/link";
 import GoBackButton from "../../components/goBackButton";
 

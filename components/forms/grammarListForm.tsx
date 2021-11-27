@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { GrammarCard } from ".prisma/client";
 import Router from "next/router";
-import Accordion from "../../components/accordion";
-import CheckboxGroup from "../../components/checkboxGroup";
-import Button from "../../components/button";
-import Input from "../../components/input";
+import Accordion from "../accordion";
+import CheckboxGroup from "../checkboxGroup";
+import Button from "../button";
+import Input from "../input";
 import { BookWithChapter, ChapterWithCard } from "../../lib/types";
 
 function GrammarListForm({ books }: { books: BookWithChapter[] }) {

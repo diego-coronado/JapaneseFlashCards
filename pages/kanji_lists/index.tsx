@@ -4,7 +4,7 @@ import { getBooks } from "../../lib/db/books";
 import { getKanjiLists } from "../../lib/db/kanjiLists";
 import { BookWithChapter } from "../../lib/types";
 import GoBackButton from "../../components/goBackButton";
-import KanjiListForm from "./kanjiListForm";
+import KanjiListForm from "../../components/forms/kanjiListForm";
 import Link from "next/link";
 import format from "date-fns/format";
 

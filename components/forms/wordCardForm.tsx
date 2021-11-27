@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { Book, Chapter } from ".prisma/client";
-import Input from "../../components/input";
+import Input from "../input";
 import Router from "next/router";
-import Button from "../../components/button";
-import Select from "../../components/select";
+import Button from "../button";
+import Select from "../select";
 
 export default function WordCardForm({ books }: { books: Book[] }) {
   const [word, setWord] = useState("");

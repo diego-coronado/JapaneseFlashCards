@@ -2,10 +2,10 @@ import { useCallback, useState } from "react";
 import { KanjiCard } from ".prisma/client";
 import { BookWithChapter, ChapterWithCard } from "../../lib/types";
 import Router from "next/router";
-import Accordion from "../../components/accordion";
-import Input from "../../components/input";
-import CheckboxGroup from "../../components/checkboxGroup";
-import Button from "../../components/button";
+import Accordion from "../accordion";
+import Input from "../input";
+import CheckboxGroup from "../checkboxGroup";
+import Button from "../button";
 
 function KanjiListForm({ books }: { books: BookWithChapter[] }) {
   const [name, setName] = useState("");

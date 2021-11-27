@@ -1,9 +1,9 @@
 import { Book, Chapter } from ".prisma/client";
 import Router from "next/router";
 import { useCallback, useState } from "react";
-import Button from "../../components/button";
-import Input from "../../components/input";
-import Select from "../../components/select";
+import Button from "../button";
+import Input from "../input";
+import Select from "../select";
 import { XCircleIcon } from "@heroicons/react/solid";
 
 function KanjiCardForm({ books }: { books: Book[] }) {

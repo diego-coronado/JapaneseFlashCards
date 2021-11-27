@@ -1,6 +1,6 @@
 import { Book, TYPE } from ".prisma/client";
 import { getBooks } from "../../lib/db/books";
-import KanjiCardForm from "./kanjiCardForm";
+import KanjiCardForm from "../../components/forms/kanjiCardForm";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";

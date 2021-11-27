@@ -1,8 +1,8 @@
 import Router from "next/router";
 import { useCallback, useState } from "react";
-import Button from "../../components/button";
-import Input from "../../components/input";
-import Select from "../../components/select";
+import Button from "../button";
+import Input from "../input";
+import Select from "../select";
 import { Type } from "../../lib/types";
 
 export default function BookForm({ types }: { types: Type[] }) {

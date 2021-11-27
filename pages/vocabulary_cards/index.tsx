@@ -3,7 +3,7 @@ import { Book, TYPE } from ".prisma/client";
 import { useRouter } from "next/router";
 import { getBooks } from "../../lib/db/books";
 import Link from "next/link";
-import VocabularyCardForm from "./vocabularyCardForm";
+import VocabularyCardForm from "../../components/forms/vocabularyCardForm";
 import GoBackButton from "../../components/goBackButton";
 
 const VocabularyCards = ({ books }: { books: Book[] }) => {
