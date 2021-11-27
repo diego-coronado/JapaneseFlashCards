@@ -42,7 +42,7 @@ function VocabularyListForm({ books }: { books: BookWithChapter[] }) {
           }}
         />
       </div>
-      {book?.map((book) => {
+      {books?.map((book) => {
         if (!book.chapters) return null;
 
         return (

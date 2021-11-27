@@ -33,7 +33,7 @@ const Books = ({ books, types }: { books: Book[]; types: Type[] }) => {
       {showBookForm && <BookForm types={types} />}
       {books.length > 0 ? (
         <ul>
-          {book?.map((book) => (
+          {books?.map((book) => (
             <BookCard key={book.id} book={book} />
           ))}
         </ul>

@@ -3,7 +3,7 @@ import { prisma } from "./prisma";
 
 export async function getBooks(options: any = {}) {
   const books = await prisma.book.findMany({ ...options });
-  const booksFormatted = book?.map((book) => {
+  const booksFormatted = books?.map((book) => {
     return {
       ...book,
       createdAt: book.createdAt.toString(),
