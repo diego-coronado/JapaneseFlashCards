@@ -47,6 +47,7 @@ const Books = ({ books, types }: { books: Book[]; types: Type[] }) => {
 export async function getServerSideProps() {
   const books = await getBooks();
   const types = await getTypes();
+  console.log("=======books:======", books);
 
   return {
     props: {
