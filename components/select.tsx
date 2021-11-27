@@ -41,7 +41,7 @@ function Select({
             <div className="px-3 cursor-pointer hover:text-blue-600">Delete option</div>
           </Menu.Item>
         ) : null}
-        {options.map((option) => (
+        {options?.map((option) => (
           <Menu.Item key={option.id} onClick={() => setSelectedOption(option)}>
             <span className="px-3 cursor-pointer hover:text-blue-600">{accessor(option)}</span>
           </Menu.Item>
