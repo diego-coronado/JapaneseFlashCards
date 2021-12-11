@@ -10,6 +10,7 @@ type Option = {
   wordCard: {
     word: string;
     reading: string;
+    meaning: string;
   };
 };
 
@@ -32,8 +33,15 @@ function WordList({ list }: { list: WordCardListWithCards }) {
       {startStudy && (
         <DeckSlider
           list={list.wordCards}
-          front={(option: Option) => option.wordCard.word}
-          back={(option: Option) => option.wordCard.reading}
+          front={(option: Option) => (
+            <div className="p-2">{option.wordCard.word}</div>
+          )}
+          back={(option: Option) => (
+            <div className="p-2">{option.wordCard.reading}</div>
+          )}
+          hints={(option: Option) => (
+            <div className="p-2">Meaning: {option.wordCard.meaning}</div>
+          )}
         />
       )}
     </div>
@@ -57,7 +65,7 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
       wordCards: {
         select: {
           wordCard: {
-            select: { id: true, word: true, reading: true },
+            select: { id: true, word: true, reading: true, meaning: true },
           },
         },
       },

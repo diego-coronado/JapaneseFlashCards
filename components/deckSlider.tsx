@@ -111,13 +111,11 @@ function DeckSlider({
               <>
                 {showFront ? (
                   <div className="w-full">
-                    <div className="w-full text-center">
-                      {front(shuffledList[index])}
-                    </div>
+                    {front(shuffledList[index])}
                     {hints && showHints && hints(shuffledList[index])}
                   </div>
                 ) : (
-                  <>{back(shuffledList[index])}</>
+                  <div className="w-full">{back(shuffledList[index])}</div>
                 )}
               </>
             ) : (
@@ -128,7 +126,7 @@ function DeckSlider({
                     {hints && showHints && hints(shuffledList[index])}
                   </div>
                 ) : (
-                  <>{front(shuffledList[index])}</>
+                  <div className="w-full">{front(shuffledList[index])}</div>
                 )}
               </>
             )}

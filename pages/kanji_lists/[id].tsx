@@ -36,11 +36,11 @@ function KanjiList({ list }: { list: KanjiCardListWithCards }) {
             <div className="p-2 pr-4">{option.kanjiCard.kanji}</div>
           )}
           back={(option: Option) => (
-            <div className="p-2">
-              <div className="text-xs text-left sm:text-base">{`On: ${option.kanjiCard.onyomi.join(
+            <div className="p-2 text-center">
+              <div className="text-xs sm:text-base">{`On: ${option.kanjiCard.onyomi.join(
                 ", "
               )}`}</div>
-              <div className="text-xs text-left sm:text-base">{`Kun: ${option.kanjiCard.kunyomi.join(
+              <div className="text-xs sm:text-base">{`Kun: ${option.kanjiCard.kunyomi.join(
                 ", "
               )}`}</div>
             </div>

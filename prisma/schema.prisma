@@ -39,6 +39,7 @@ model WordCard {
   id        Int                      @id @default(autoincrement())
   word      String
   reading   String
+  meaning   String
   chapter   Chapter?                 @relation(fields: [chapterId], references: [id])
   chapterId Int?
   createdAt DateTime                 @default(now())
